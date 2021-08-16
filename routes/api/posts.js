@@ -53,7 +53,8 @@ async (req, res)=>{
 //@access private
 router.get("/", auth, async (req, res) => {
     try{
-        const posts = await Post.find({user: req.user.id}).sort([['date', -1]]);
+        // {user: req.user.id}
+        const posts = await Post.find().sort({date: -1});
         res.json(posts);
     }
     catch(err){
@@ -124,11 +125,11 @@ router.put("/like/:post_id", auth, async(req, res) => {
         }
 
         const newLike = {
-            user:req.user.id
+            user:req.user.id,
         }
         post.likes.unshift(newLike);
         await post.save();
-        return res.json(post);
+        return res.json(post.likes);
     }
     catch(err){
         return res.status(500).send("Server Error");
@@ -148,7 +149,7 @@ router.put("/unlike/:post_id", auth, async(req, res) => {
         if(index !== -1){
             post.likes.splice(index, 1);
             const updatedPost = await post.save();
-            return res.json(updatedPost);
+            return res.json(updatedPost.likes);
         }
         else{
             return res.status(400).json({msg: "Post was never liked"});
@@ -187,7 +188,7 @@ async (req, res)=>{
         };
         post.comments.unshift(newComment);
         let updatedPost = await post.save();
-        return res.json(updatedPost);
+        return res.json(updatedPost.comments);
     }
     catch(err){
         if(err.kind === "ObjectId"){
