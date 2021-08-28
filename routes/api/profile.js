@@ -226,19 +226,22 @@ router.delete("/", auth,  async (req, res) => {
 //@access Public
 router.get("/github/:username", async (req, res) => {
     try{
+        const temp1 = config.get('githubClientId'), temp2 = config.get('githubSecret');
         const options = {
-            uri:`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=${config.get('githubSecret')}`,
+            uri:`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${temp1}&client_secret=${temp2}`,
             method:'GET',
             headers:{
                 'user-agent':'node.js'
             }
         }
+        console.log(req.params.username);
         request(options, (error, response, body) => {
             if(error)console.error(error.message);
             else{
-                if(response.statusCode !== 200){
-                    return res.status(400).json({msg: "Github profile not found"}); 
-                }
+                // if(response.statusCode !== 200){
+                //     console.log("Github profile not found");
+                //     return res.status(400).json({msg: "Github profile not found"}); 
+                // }
                 res.json(JSON.parse(body));
             }
         })
