@@ -1,0 +1,7 @@
+{
+    "mongoURI": "mongodb+srv://AdiMall:11235813@cluster0.weuvs.mongodb.net/devconnectorDB",
+    "jwtSecret": "25072002Adimall",
+    "githubClientId": "5bab30bbc304d30ccea0",
+    "githubSecret": "9781fb95afebb033b58920813907986732305071"
+}
+
